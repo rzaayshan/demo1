@@ -1,0 +1,84 @@
+plugins {
+    id 'org.springframework.boot' version "$springBootVersion"
+    id 'io.spring.dependency-management' version "$springDependencyVersion"
+    id 'java'
+    id 'jacoco'
+    id "org.sonarqube" version "$sonarqubeVersion"
+    id 'maven'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+    }
+}
+
+compileJava {
+    options.compilerArgs += "-Amapstruct.defaultComponentModel=spring"
+//    options.compilerArgs += "-Amapstruct.unmappedTargetPolicy=ERROR"
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: "$validationVersion"
+
+    implementation "org.mapstruct:mapstruct:$mapstructVersion"
+    implementation "org.mapstruct:mapstruct-processor:$mapstructProcessorVersion"
+
+    annotationProcessor("org.mapstruct:mapstruct:$mapstructVersion")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
+
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: "$swaggerVersion"
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: "$swaggerVersion"
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation "junit:junit:$junitVersion"
+
+    // https://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-tools
+    implementation group: 'com.sun.xml.ws', name: 'jaxws-tools', version: '3.0.1'
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
+//    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.12.2'
+
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.8.5'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+
+    implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth', version: "$starterSleuthVersion"
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin', version: "$starterSleuthZipkin"
+
+    implementation "wsdl4j:wsdl4j:$wsdl4jVersion"
+    implementation "javax.xml.ws:jaxws-api:$jaxwsApiVersion"
+    implementation "org.glassfish.main.javaee-api:javax.jws:$jwsVersion"
+
+    implementation 'com.sun.xml.ws:jaxws-rt:2.1.4'
+
+
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
